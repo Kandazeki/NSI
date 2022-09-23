@@ -11,9 +11,28 @@ if base_de_depart == 2 :
             nombre_final == nombre
 
     if base_darrivee == 10 :
-            nombre_final == int ('nombre_de_depart',2)
+            nombre_final == int ('nombre_de_depart',10)
 
-        
-    
-    
+    if base_darrivee == 16 :
+        nombre_final == int ('nombre_de_depart',16)
+
+    else :
+        print ("veuillez entrer une base valide (2, 10 ou 16)")
+
+if base_de_depart == 10 :
+    if base_darrivee == 10 :
+        nombre_final == nombre
+
+    if base_darrivee == 2 :
+        nombre_final == int ('nombre_de_depart',2)
+
+    if base_darrivee == 16 :
+        nombre_final == int ('nombre_de_depart',16)
+
+    else :
+        print ("veuillez entrer une base valide (2, 10 ou 16)")
+
+    return nombre_final
+
+print (nombre_final)
 
