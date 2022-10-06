@@ -1,7 +1,6 @@
 number = (input ("entrez un entier ecrit en base 2, 10 ou 16 : "))
 
 #C'est pour éviter les erreurs
-
 checkNumberArray = list(number)
 n = len(checkNumberArray)
 i = 0
@@ -9,6 +8,7 @@ isError = 0
 isBin = 0
 isDec = 0
 
+# on vérifie que number ne contient que des chiffres ou des lettres entre A et F ou a et f, si oui on renvoie isError = 0
 while i < n :
     code = ord(checkNumberArray[i])
     if ((code >= 48 and code <= 57) or (code >= 65 and code <= 70) or (code >= 97 and code <= 102)):
@@ -17,7 +17,8 @@ while i < n :
         isError = 1
         break
     i = i + 1
-    
+
+# on vérifie si number peut être un nombre décimal, si oui on renvoie isDec = 0
 i = 0
 while i < n :
     code = ord(checkNumberArray[i])
@@ -27,7 +28,8 @@ while i < n :
         isDec = 1
         break
     i = i + 1
-    
+
+# on vérifie si number peut être un binaire, si oui on renvoie isBin = 0    
 i = 0
 while i < n :
     code = ord(checkNumberArray[i])
@@ -38,54 +40,54 @@ while i < n :
         break
     i = i + 1
 
+# s'il n'y a pas d'erreur de saisi
 if isError == 0 :
+    # si number n'est pas un binaire et n'est pas un décimal, il est forcément un hexadécimal, on évite de faire un input
     if isBin == 1 and isDec == 1:
         base_de_depart = 16
+        isBase = 0
     else:
         base_de_depart = input ("quelle est la base de ce nombre [binaire : 2, décimal : 10 ou Hexadécimal : 16] ? ")
-
-        bases_depart = list(base_de_depart)
-        n1 = len(bases_depart)
-        i = 0
         isBase = 0
-        while i < n1 :
-            code = ord(bases_depart[i])
-            if code == 49 or code == 50 or code == 48 or code == 54: 
-                isBase = 0
-            else:
-                isBase = 1
-                break
-            i = i + 1
+        
+        # on vérifie que base_de_depart est correct (2, 10 ou 16)
+        try:
+            base_de_depart = int(base_de_depart)
+        except ValueError:
+            isBase = 1
+    
+        if base_de_depart == 2 or base_de_depart == 10 or base_de_depart == 16:
+            isBase = 0
+        else:
+            isBase = 1
     
         if isBase == 0 :
             base_de_depart = int(base_de_depart)
 
-if isError == 0 :
+# s'il n'y a pas d'erreur sur les saisies précédentes :
+if isError == 0 and isBase == 0 :
     base_darrivee = input ("dans quelle base voulez-vous le convertir [binaire : 2, décimal : 10 ou Hexadécimal : 16] ? ")
         
-    bases_darrivee = list(base_darrivee)
-    n2 = len(base_darrivee)
-    i = 0
     isBaseFinal = 0
 
-    while i < n2 :
-        code = ord(bases_darrivee[i])
-        if code == 49 or code == 50 or code == 48 or code == 54: 
-            isBaseFinal = 0
-        else:
-            isBaseFinal = 1
-            break
-        i = i + 1
-    if isBaseFinal == 0 :
+    # on vérifie que base_darrivee est correct (2, 10 ou 16)
+    try:
         base_darrivee = int(base_darrivee)
+    except ValueError:
+        isBaseFinal = 1
     
+    if base_darrivee == 2 or base_darrivee == 10 or base_darrivee == 16:
+        isBaseFinal = 0
+    else:
+        isBaseFinal = 1
+
+# dictionnaires de decimal vers hex et de hex vers décimal    
 dict_dec_to_hex = {10:"A", 11:"B", 12:"C", 13:"D", 14:"E", 15:"F"}
 dict_hex_to_dec = {"0" : 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
                    "A":10, "B":11, "C":12, "D":13, "E":14, "F":15,
                    "a":10, "b": 11, "c": 12, "d": 13, "e": 14, "f": 15}
 
-#C'est les fonctions
-
+#algo bin vers décimal
 def calc_bin_to_dec (number) :
     numbers = list(number)
     coef = 1
@@ -99,7 +101,7 @@ def calc_bin_to_dec (number) :
 
     return result
 
-
+#algo bin vers hexadécimal
 def calc_bin_to_hex (number) :
     numbers = list(number)
     coef = 1
@@ -107,7 +109,6 @@ def calc_bin_to_hex (number) :
     result = 0
     result_hex = ''
 
-    
     while n >= 0:
         result = result + int(numbers[n]) * coef
         n = n -1
@@ -123,7 +124,7 @@ def calc_bin_to_hex (number) :
 
     return result_final 
 
-
+#algo decimal vers bin
 def calc_dec_to_bin (number) :
     result = ''
     while int(number) > 0 :
@@ -134,6 +135,7 @@ def calc_dec_to_bin (number) :
     return result_final 
 
 
+#algo decimal vers hex
 def calc_dec_to_hex (number) :
     result = ''
     remainder = 0
@@ -149,7 +151,7 @@ def calc_dec_to_hex (number) :
 
     return result_final
 
-
+#algo hex vers bin
 def calc_hex_to_bin (number) :
     
     numbers = list(number)
@@ -176,7 +178,7 @@ def calc_hex_to_bin (number) :
         
     return result_final        
 
-
+#algo hex vers decimal
 def calc_hex_to_dec (number) :
     
     numbers = list(number)
@@ -195,7 +197,6 @@ def calc_hex_to_dec (number) :
     return result
 
 #Le programme principal
-
 if isError == 0:
     if base_de_depart == 2 :
         if isBin == 0 :
